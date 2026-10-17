@@ -1,0 +1,16 @@
+name: Smoke verification
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check fixture format
+        run: |
+          python3 --version
+          python3 - <<'PY'
+          from pathlib import Path
+          assert Path("src/work.txt").read_bytes() in (b"before\n", b"after\n")
+          PY
